@@ -1,0 +1,10 @@
+version: '2'
+services:
+  flights:
+    container_name: traveloo-flights
+    build:
+      context: traveloo-flights
+    expose:
+      - 8080
+    ports:
+    - 8080:8080
