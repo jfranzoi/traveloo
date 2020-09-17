@@ -20,9 +20,9 @@ public class InMemoryDatabaseTest {
 
     @Test
     public void createSequentially() {
-        assertThat(database.createTrip(), hasProperty("id", is("1")));
-        assertThat(database.createTrip(), hasProperty("id", is("2")));
-        assertThat(database.createTrip(), hasProperty("id", is("3")));
+        assertThat(database.createTrip(Trip.empty()), hasProperty("id", is("1")));
+        assertThat(database.createTrip(Trip.empty()), hasProperty("id", is("2")));
+        assertThat(database.createTrip(Trip.empty()), hasProperty("id", is("3")));
     }
 
     @Test
@@ -32,7 +32,7 @@ public class InMemoryDatabaseTest {
 
     @Test
     public void foundById() {
-        Trip trip = database.createTrip();
+        Trip trip = database.createTrip(Trip.empty());
         assertThat(database.findTripBy("1"), is(Optional.of(trip)));
     }
 }

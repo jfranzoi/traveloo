@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.util.UriComponentsBuilder;
@@ -25,8 +26,8 @@ public class TripResource {
     }
 
     @RequestMapping(method = RequestMethod.POST, value = "/trip")
-    public ResponseEntity<?> create(UriComponentsBuilder uri) {
-        Trip trip = database.createTrip();
+    public ResponseEntity<?> create(@RequestBody TripRepresentation representation, UriComponentsBuilder uri) {
+        Trip trip = database.createTrip(toDomain(representation));
         return ResponseEntity.created(uri.path("/trip/{id}")
                 .buildAndExpand(trip.getId()).toUri())
                 .build();
@@ -47,23 +48,31 @@ public class TripResource {
                 .orElseGet(() -> ResponseEntity.notFound().build());
     }
 
-    private ItinerariesRepresentation toRepresentation(List<Itinerary> itineraries) {
+    private ItinerariesRepresentation toRepresentation(List<Itinerary> domains) {
         ItinerariesRepresentation representation = new ItinerariesRepresentation();
-        representation.setItineraries(itineraries.stream()
+        representation.setItineraries(domains.stream()
                 .map(x -> toRepresentation(x))
                 .collect(Collectors.toList()));
         return representation;
     }
 
-    private ItineraryRepresentation toRepresentation(Itinerary itinerary) {
+    private ItineraryRepresentation toRepresentation(Itinerary domain) {
         ItineraryRepresentation representation = new ItineraryRepresentation();
-        representation.setId(itinerary.getId());
+        representation.setId(domain.getId());
         return representation;
     }
 
-    private TripRepresentation toRepresentation(Trip id) {
+    private TripRepresentation toRepresentation(Trip domain) {
         TripRepresentation representation = new TripRepresentation();
-        representation.setId(id.getId());
+        representation.setFrom(domain.getFrom());
+        representation.setTo(domain.getTo());
         return representation;
+    }
+
+    private Trip toDomain(TripRepresentation representation) {
+        Trip domain = Trip.empty();
+        domain.setFrom(representation.getFrom());
+        domain.setTo(representation.getTo());
+        return domain;
     }
 }

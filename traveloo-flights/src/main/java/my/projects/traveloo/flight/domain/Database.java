@@ -4,7 +4,7 @@ import java.util.Collection;
 import java.util.Optional;
 
 public interface Database {
-    Trip createTrip();
+    Trip createTrip(Trip trip);
 
     Optional<Trip> findTripBy(String id);
 

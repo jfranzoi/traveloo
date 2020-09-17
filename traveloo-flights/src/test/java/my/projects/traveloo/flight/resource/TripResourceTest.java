@@ -11,6 +11,8 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
 import java.util.Arrays;
 
+import static org.hamcrest.Matchers.*;
+import static org.junit.Assert.assertThat;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
@@ -34,14 +36,26 @@ public class TripResourceTest {
                 .content("{\"from\":\"LON\",\"to\":\"PAR\"}"))
                 .andExpect(status().isCreated())
                 .andExpect(header().string("Location", "http://localhost/trip/1"));
+
+        assertThat(database.allTrips(), contains(
+                allOf(
+                        hasProperty("from", is("LON")),
+                        hasProperty("to", is("PAR"))
+                )
+        ));
     }
 
     @Test
     public void tripDetailsFound() throws Exception {
-        database.createTrip();
+        Trip trip = Trip.empty();
+        trip.setFrom("LON");
+        trip.setTo("PAR");
+        database.createTrip(trip);
+
         mvc.perform(get("/trip/1"))
                 .andExpect(status().isOk())
-                .andExpect(content().contentType(MediaType.APPLICATION_JSON));
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+                .andExpect(content().json("{ from: 'LON', to: 'PAR' }"));
     }
 
     @Test
@@ -52,18 +66,19 @@ public class TripResourceTest {
 
     @Test
     public void tripItinerariesNotReady() throws Exception {
-        database.createTrip();
+        database.createTrip(Trip.empty());
         mvc.perform(get("/trip/1/itineraries"))
                 .andExpect(status().isNotFound());
     }
 
     @Test
     public void tripItinerariesReady() throws Exception {
-        Trip trip = database.createTrip();
+        Trip trip = database.createTrip(Trip.empty());
         trip.addItineraries(Arrays.asList(new Itinerary("123")));
 
         mvc.perform(get("/trip/1/itineraries"))
                 .andExpect(status().isOk())
-                .andExpect(content().contentType(MediaType.APPLICATION_JSON));
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+                .andExpect(content().json("{ itineraries: [ { id: '123' } ] }"));
     }
 }
