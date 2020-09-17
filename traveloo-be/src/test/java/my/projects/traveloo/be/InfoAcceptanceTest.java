@@ -48,7 +48,8 @@ public class InfoAcceptanceTest {
         assertThat(entity.getStatusCode(), is(HttpStatus.OK));
         assertThat(entity.getHeaders().get(HttpHeaders.CONTENT_TYPE), contains("application/json"));
 
-        assertThat(entity.getBody(), hasProperty("value", is("ok")));
+        assertThat(entity.getBody(), hasProperty("global", is("ok")));
+        assertThat(entity.getBody(), hasProperty("be", is("ok")));
     }
 
     private String location(String paths) throws Exception {

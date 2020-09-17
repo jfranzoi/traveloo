@@ -15,7 +15,8 @@ public class InfoController {
 
     private StatusResponse statusAt(String value) {
         StatusResponse response = new StatusResponse();
-        response.setValue(value);
+        response.setBe(value);
+        response.setGlobal(value);
         return response;
     }
 }

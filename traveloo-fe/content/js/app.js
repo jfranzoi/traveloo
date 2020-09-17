@@ -8,6 +8,6 @@ $(document).ready(function(){
     })
     .done(function(data){
         console.log('Status: ' + data);
-        $('#current-status').text(data['value']);
+        $('#current-status').text(data['global']);
     });
 });
