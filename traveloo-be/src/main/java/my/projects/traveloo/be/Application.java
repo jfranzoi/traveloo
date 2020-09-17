@@ -1,4 +1,4 @@
-package my.projects.traveloo.flights;
+package my.projects.traveloo.be;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

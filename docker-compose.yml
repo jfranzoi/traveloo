@@ -7,4 +7,12 @@ services:
     expose:
       - 8080
     ports:
-    - 8080:8080
+      - 8081:8080
+  be:
+    container_name: traveloo-be
+    build:
+      context: traveloo-be
+    expose:
+      - 8080
+    ports:
+      - 8080:8080
