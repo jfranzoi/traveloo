@@ -27,7 +27,7 @@ public class TripResource {
 
     @RequestMapping(method = RequestMethod.POST, value = "/trip")
     public ResponseEntity<?> create(@RequestBody TripRepresentation representation, UriComponentsBuilder uri) {
-        Trip trip = database.createTrip(toDomain(representation));
+        Trip trip = database.save(toDomain(representation));
         return ResponseEntity.created(uri.path("/trip/{id}")
                 .buildAndExpand(trip.getId()).toUri())
                 .build();

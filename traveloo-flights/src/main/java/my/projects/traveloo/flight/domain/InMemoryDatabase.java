@@ -10,11 +10,9 @@ public class InMemoryDatabase implements Database {
     private Map<String, Trip> tripById = new HashMap<>();
 
     @Override
-    public Trip createTrip(Trip trip) {
-        String nextId = String.valueOf(tripById.size() + 1);
-        trip.setId(nextId);
-
-        tripById.put(nextId, trip);
+    public Trip save(Trip trip) {
+        trip.setId(nextId());
+        tripById.put(trip.getId(), trip);
         return trip;
     }
 
@@ -26,6 +24,10 @@ public class InMemoryDatabase implements Database {
     @Override
     public Collection<Trip> allTrips() {
         return tripById.values();
+    }
+
+    private String nextId() {
+        return String.valueOf(tripById.size() + 1);
     }
 
 }

@@ -50,7 +50,7 @@ public class TripResourceTest {
         Trip trip = Trip.empty();
         trip.setFrom("LON");
         trip.setTo("PAR");
-        database.createTrip(trip);
+        database.save(trip);
 
         mvc.perform(get("/trip/1"))
                 .andExpect(status().isOk())
@@ -66,14 +66,14 @@ public class TripResourceTest {
 
     @Test
     public void tripItinerariesNotReady() throws Exception {
-        database.createTrip(Trip.empty());
+        database.save(Trip.empty());
         mvc.perform(get("/trip/1/itineraries"))
                 .andExpect(status().isNotFound());
     }
 
     @Test
     public void tripItinerariesReady() throws Exception {
-        Trip trip = database.createTrip(Trip.empty());
+        Trip trip = database.save(Trip.empty());
         trip.addItineraries(Arrays.asList(new Itinerary("123")));
 
         mvc.perform(get("/trip/1/itineraries"))
