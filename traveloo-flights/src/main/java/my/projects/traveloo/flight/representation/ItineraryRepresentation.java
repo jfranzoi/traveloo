@@ -1,4 +1,4 @@
-package my.projects.traveloo.flight.resource;
+package my.projects.traveloo.flight.representation;
 
 public class ItineraryRepresentation {
 

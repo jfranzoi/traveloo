@@ -1,5 +1,6 @@
 package my.projects.traveloo.flight.resource;
 
+import my.projects.traveloo.flight.representation.StatusRepresentation;
 import org.springframework.http.CacheControl;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
