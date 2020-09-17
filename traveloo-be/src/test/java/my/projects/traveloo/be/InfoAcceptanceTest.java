@@ -7,9 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.boot.web.server.LocalServerPort;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
+import org.springframework.http.*;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.web.util.UriComponentsBuilder;
 
@@ -25,6 +23,21 @@ public class InfoAcceptanceTest {
 
     @Autowired
     private TestRestTemplate template;
+
+    @Test
+    public void anySiteCORS() throws Exception {
+        // see: https://stackoverflow.com/a/41841662
+        System.setProperty("sun.net.http.allowRestrictedHeaders", "true");
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.add(HttpHeaders.ORIGIN, "http://any-site");
+
+        ResponseEntity<StatusResponse> entity = template.exchange(
+                location("/info/status"), HttpMethod.GET, new HttpEntity<>(headers), StatusResponse.class
+        );
+
+        assertThat(entity.getHeaders().get(HttpHeaders.ACCESS_CONTROL_ALLOW_ORIGIN), contains("*"));
+    }
 
     @Test
     public void statusOK() throws Exception {

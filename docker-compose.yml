@@ -16,3 +16,13 @@ services:
       - 8080
     ports:
       - 8080:8080
+  fe:
+    container_name: traveloo-fe
+    build:
+      context: traveloo-fe
+      args:
+        - --no-cache
+    expose:
+      - 80
+    ports:
+      - 80:80
