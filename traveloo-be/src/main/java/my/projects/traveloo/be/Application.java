@@ -1,5 +1,7 @@
 package my.projects.traveloo.be;
 
+import my.projects.traveloo.be.domain.FlightClient;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
@@ -11,6 +13,11 @@ public class Application {
 
     public static void main(String[] args) {
         SpringApplication.run(Application.class, args);
+    }
+
+    @Bean
+    public FlightClient flightClient(@Value("${dependencies.traveloo-flights}") String location) {
+        return new FlightClient(location);
     }
 
     @Bean

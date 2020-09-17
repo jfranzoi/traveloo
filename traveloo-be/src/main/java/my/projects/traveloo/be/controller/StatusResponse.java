@@ -4,6 +4,7 @@ public class StatusResponse {
 
     private String global;
     private String be;
+    private String flights;
 
     public String getGlobal() {
         return global;
@@ -19,5 +20,13 @@ public class StatusResponse {
 
     public void setBe(String be) {
         this.be = be;
+    }
+
+    public void setFlights(String flights) {
+        this.flights = flights;
+    }
+
+    public String getFlights() {
+        return flights;
     }
 }

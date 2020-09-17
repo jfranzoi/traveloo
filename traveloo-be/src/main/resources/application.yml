@@ -1,0 +1,2 @@
+dependencies:
+  traveloo-flights: '${FLIGHTS_LOCATION:-http://localhost:8081}'

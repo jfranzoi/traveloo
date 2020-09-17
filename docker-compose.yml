@@ -16,6 +16,8 @@ services:
       - 8080
     ports:
       - 8080:8080
+    environment:
+      - FLIGHTS_LOCATION=http://flights:8080
   fe:
     container_name: traveloo-fe
     build:

@@ -26,6 +26,12 @@
         </dependency>
 
         <dependency>
+            <groupId>org.mock-server</groupId>
+            <artifactId>mockserver-junit-rule</artifactId>
+            <scope>test</scope>
+        </dependency>
+
+        <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
             <scope>test</scope>

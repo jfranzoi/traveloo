@@ -1,4 +1,4 @@
-package my.projects.traveloo.be;
+package my.projects.traveloo.be.acceptance;
 
 import my.projects.traveloo.be.controller.StatusResponse;
 import org.junit.Test;
@@ -8,14 +8,16 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.boot.web.server.LocalServerPort;
 import org.springframework.http.*;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import static org.hamcrest.Matchers.*;
 import static org.junit.Assert.assertThat;
 
-@RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+@ActiveProfiles("test")
+@RunWith(SpringRunner.class)
 public class InfoAcceptanceTest {
 
     @LocalServerPort
@@ -47,8 +49,6 @@ public class InfoAcceptanceTest {
 
         assertThat(entity.getStatusCode(), is(HttpStatus.OK));
         assertThat(entity.getHeaders().get(HttpHeaders.CONTENT_TYPE), contains("application/json"));
-
-        assertThat(entity.getBody(), hasProperty("global", is("ok")));
         assertThat(entity.getBody(), hasProperty("be", is("ok")));
     }
 
