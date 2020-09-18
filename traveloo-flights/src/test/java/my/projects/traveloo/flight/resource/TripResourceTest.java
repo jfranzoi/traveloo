@@ -55,7 +55,10 @@ public class TripResourceTest {
         mvc.perform(get("/trip/1"))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
-                .andExpect(content().json("{ from: 'LON', to: 'PAR' }"));
+                .andExpect(content().json("{ from: 'LON', to: 'PAR' }"))
+                .andExpect(content().json(
+                        "{ links: [ { rel: 'self', href: 'http://localhost/trip/1' }, { rel: 'itineraries', href: 'http://localhost/trip/1/itineraries' } ] }"
+                ));
     }
 
     @Test
