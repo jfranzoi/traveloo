@@ -1,7 +1,8 @@
 package my.projects.traveloo.flight.resource;
 
-import my.projects.traveloo.flight.domain.Database;
 import my.projects.traveloo.flight.domain.Itinerary;
+import my.projects.traveloo.flight.domain.Position;
+import my.projects.traveloo.flight.domain.Repository;
 import my.projects.traveloo.flight.domain.Trip;
 import my.projects.traveloo.flight.representation.ItinerariesRepresentation;
 import my.projects.traveloo.flight.representation.ItineraryRepresentation;
@@ -18,36 +19,37 @@ import org.springframework.web.util.UriComponents;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
 
 @Controller
 public class TripResource {
 
-    private Database database;
+    private Repository repository;
 
     @Autowired
-    public TripResource(Database database) {
-        this.database = database;
+    public TripResource(Repository repository) {
+        this.repository = repository;
     }
 
     @RequestMapping(method = RequestMethod.POST, value = "/trip")
     public ResponseEntity<?> create(@RequestBody TripRepresentation representation, UriComponentsBuilder uri) {
-        Trip trip = database.save(toDomain(representation));
+        Trip trip = repository.save(toDomain(representation));
         return ResponseEntity.created(locationToDetail(uri, trip).toUri())
                 .build();
     }
 
     @RequestMapping(method = RequestMethod.GET, value = "/trip/{id}")
     public ResponseEntity<?> detail(@PathVariable("id") String id, UriComponentsBuilder uri) {
-        return database.findTripBy(id)
+        return repository.findTripBy(id)
                 .map(x -> ResponseEntity.ok().body(toRepresentation(x, uri)))
                 .orElseGet(() -> ResponseEntity.notFound().build());
     }
 
     @RequestMapping(method = RequestMethod.GET, value = "/trip/{id}/itineraries")
     public ResponseEntity<?> itineraries(@PathVariable("id") String id) {
-        return database.findTripBy(id)
+        return repository.findTripBy(id)
                 .flatMap(x -> x.getItineraries())
                 .map(x -> ResponseEntity.ok().body(toRepresentation(x)))
                 .orElseGet(() -> ResponseEntity.notFound().build());
@@ -71,8 +73,21 @@ public class TripResource {
 
     private ItineraryRepresentation toRepresentation(Itinerary domain) {
         ItineraryRepresentation representation = new ItineraryRepresentation();
-        representation.setId(domain.getId());
+        representation.setDetails(domain.getHops().stream()
+                .map(x -> Arrays.asList(
+                        details(x.getDeparture()),
+                        details(x.getArrival())
+                )).flatMap(Collection::stream)
+                .collect(Collectors.joining(", ")));
         return representation;
+    }
+
+    private String details(Position position) {
+        return new StringBuilder()
+                .append(position.getPlace())
+                .append(" ")
+                .append(position.getDate())
+                .toString();
     }
 
     private TripRepresentation toRepresentation(Trip domain, UriComponentsBuilder uri) {

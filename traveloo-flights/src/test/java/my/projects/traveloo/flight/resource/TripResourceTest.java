@@ -1,14 +1,17 @@
 package my.projects.traveloo.flight.resource;
 
-import my.projects.traveloo.flight.infrastructure.InMemoryDatabase;
+import my.projects.traveloo.flight.domain.Hop;
 import my.projects.traveloo.flight.domain.Itinerary;
+import my.projects.traveloo.flight.domain.Position;
 import my.projects.traveloo.flight.domain.Trip;
+import my.projects.traveloo.flight.infrastructure.InMemoryRepository;
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
+import java.time.Instant;
 import java.util.Arrays;
 
 import static org.hamcrest.Matchers.*;
@@ -20,11 +23,11 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 public class TripResourceTest {
 
     private MockMvc mvc;
-    private InMemoryDatabase database;
+    private InMemoryRepository database;
 
     @Before
     public void setUp() throws Exception {
-        database = new InMemoryDatabase();
+        database = new InMemoryRepository();
         mvc = MockMvcBuilders.standaloneSetup(new TripResource(database))
                 .build();
     }
@@ -77,11 +80,19 @@ public class TripResourceTest {
     @Test
     public void tripItinerariesReady() throws Exception {
         Trip trip = database.save(Trip.empty());
-        trip.addItineraries(Arrays.asList(new Itinerary("123")));
+
+        Itinerary itinerary = new Itinerary("any");
+        itinerary.setHops(Arrays.asList(
+                new Hop(
+                        new Position("LON", Instant.parse("2020-01-01T12:30:00Z")),
+                        new Position("PAR", Instant.parse("2020-02-01T18:30:00Z"))
+                )
+        ));
+        trip.addItineraries(Arrays.asList(itinerary));
 
         mvc.perform(get("/trip/1/itineraries"))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
-                .andExpect(content().json("{ itineraries: [ { id: '123' } ] }"));
+                .andExpect(content().json("{ itineraries: [ { details: 'LON 2020-01-01T12:30:00Z, PAR 2020-02-01T18:30:00Z' } ] }"));
     }
 }

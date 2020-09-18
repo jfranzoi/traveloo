@@ -1,7 +1,7 @@
 package my.projects.traveloo.flight;
 
-import my.projects.traveloo.flight.domain.Database;
-import my.projects.traveloo.flight.infrastructure.InMemoryDatabase;
+import my.projects.traveloo.flight.domain.Repository;
+import my.projects.traveloo.flight.infrastructure.InMemoryRepository;
 import my.projects.traveloo.flight.infrastructure.InventoryScheduler;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -21,13 +21,13 @@ public class Application {
     }
 
     @Bean
-    public InMemoryDatabase database() {
-        return new InMemoryDatabase();
+    public InMemoryRepository database() {
+        return new InMemoryRepository();
     }
 
     @Bean
-    public InventoryScheduler inventory(Database database) {
-        return new InventoryScheduler(database);
+    public InventoryScheduler inventory(Repository repository) {
+        return new InventoryScheduler(repository);
     }
 
     @Bean

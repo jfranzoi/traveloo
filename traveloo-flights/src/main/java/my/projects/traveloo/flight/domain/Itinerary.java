@@ -1,5 +1,6 @@
 package my.projects.traveloo.flight.domain;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class Itinerary {
@@ -9,6 +10,7 @@ public class Itinerary {
 
     public Itinerary(String id) {
         this.id = id;
+        this.hops = new ArrayList<>();
     }
 
     public String getId() {

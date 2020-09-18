@@ -1,6 +1,6 @@
 package my.projects.traveloo.flight.infrastructure;
 
-import my.projects.traveloo.flight.domain.Database;
+import my.projects.traveloo.flight.domain.Repository;
 import my.projects.traveloo.flight.domain.Trip;
 
 import java.util.Collection;
@@ -8,7 +8,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 
-public class InMemoryDatabase implements Database {
+public class InMemoryRepository implements Repository {
 
     private Map<String, Trip> tripById = new HashMap<>();
 

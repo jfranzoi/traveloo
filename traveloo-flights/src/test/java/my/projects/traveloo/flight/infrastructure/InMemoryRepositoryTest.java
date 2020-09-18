@@ -1,7 +1,6 @@
 package my.projects.traveloo.flight.infrastructure;
 
 import my.projects.traveloo.flight.domain.Trip;
-import my.projects.traveloo.flight.infrastructure.InMemoryDatabase;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -11,13 +10,13 @@ import static org.hamcrest.Matchers.hasProperty;
 import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.assertThat;
 
-public class InMemoryDatabaseTest {
+public class InMemoryRepositoryTest {
 
-    private InMemoryDatabase database;
+    private InMemoryRepository database;
 
     @Before
     public void setUp() throws Exception {
-        database = new InMemoryDatabase();
+        database = new InMemoryRepository();
     }
 
     @Test

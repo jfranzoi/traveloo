@@ -2,13 +2,13 @@ package my.projects.traveloo.flight.representation;
 
 public class ItineraryRepresentation {
 
-    private String id;
+    private String details;
 
-    public void setId(String id) {
-        this.id = id;
+    public String getDetails() {
+        return details;
     }
 
-    public String getId() {
-        return id;
+    public void setDetails(String details) {
+        this.details = details;
     }
 }

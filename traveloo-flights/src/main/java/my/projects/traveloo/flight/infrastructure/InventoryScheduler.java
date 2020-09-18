@@ -1,6 +1,6 @@
 package my.projects.traveloo.flight.infrastructure;
 
-import my.projects.traveloo.flight.domain.Database;
+import my.projects.traveloo.flight.domain.Repository;
 import my.projects.traveloo.flight.domain.Inventory;
 import org.springframework.scheduling.annotation.Scheduled;
 
@@ -10,16 +10,16 @@ import java.util.Optional;
 public class InventoryScheduler {
 
     private Inventory inventory;
-    private Database database;
+    private Repository repository;
 
-    public InventoryScheduler(Database database) {
-        this.database = database;
+    public InventoryScheduler(Repository repository) {
+        this.repository = repository;
         this.inventory = new Inventory();
     }
 
     @Scheduled(fixedRateString = "${schedules.inventory.rate}")
     public void prepareItineraries() {
-        database.allTrips().stream()
+        repository.allTrips().stream()
                 .filter(x -> none(x.getItineraries()))
                 .forEach(x -> inventory.addItinerariesTo(x));
     }
