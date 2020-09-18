@@ -1,5 +1,7 @@
-package my.projects.traveloo.flight.domain;
+package my.projects.traveloo.flight.infrastructure;
 
+import my.projects.traveloo.flight.domain.Trip;
+import my.projects.traveloo.flight.infrastructure.InMemoryDatabase;
 import org.junit.Before;
 import org.junit.Test;
 

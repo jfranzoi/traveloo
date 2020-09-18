@@ -1,8 +1,8 @@
 package my.projects.traveloo.flight;
 
 import my.projects.traveloo.flight.domain.Database;
-import my.projects.traveloo.flight.domain.InMemoryDatabase;
-import my.projects.traveloo.flight.domain.Inventory;
+import my.projects.traveloo.flight.infrastructure.InMemoryDatabase;
+import my.projects.traveloo.flight.infrastructure.InventoryScheduler;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
@@ -26,12 +26,12 @@ public class Application {
     }
 
     @Bean
-    public Inventory inventory(Database database) {
-        return new Inventory(database);
+    public InventoryScheduler inventory(Database database) {
+        return new InventoryScheduler(database);
     }
 
     @Bean
-    public Docket api() {
+    public Docket swagger() {
         return new Docket(DocumentationType.OAS_30).select()
                 .apis(RequestHandlerSelectors.any())
                 .paths(PathSelectors.any())

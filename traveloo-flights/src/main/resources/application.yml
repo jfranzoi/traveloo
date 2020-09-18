@@ -1,0 +1,3 @@
+schedules:
+  inventory:
+    rate: '5000'

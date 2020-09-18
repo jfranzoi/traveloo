@@ -1,4 +1,7 @@
-package my.projects.traveloo.flight.domain;
+package my.projects.traveloo.flight.infrastructure;
+
+import my.projects.traveloo.flight.domain.Database;
+import my.projects.traveloo.flight.domain.Trip;
 
 import java.util.Collection;
 import java.util.HashMap;

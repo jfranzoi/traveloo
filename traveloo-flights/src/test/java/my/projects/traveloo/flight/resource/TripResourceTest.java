@@ -1,6 +1,6 @@
 package my.projects.traveloo.flight.resource;
 
-import my.projects.traveloo.flight.domain.InMemoryDatabase;
+import my.projects.traveloo.flight.infrastructure.InMemoryDatabase;
 import my.projects.traveloo.flight.domain.Itinerary;
 import my.projects.traveloo.flight.domain.Trip;
 import org.junit.Before;
